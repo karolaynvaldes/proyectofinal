@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Farmacia EL Valle </title>
+</head>
+<body>
+    <header>
+        <h1 class="title"> Farmacia El Valle Panamá </h1>
+    </header>
+
+    <main>
+        <div class="container" id="main-container">
+            <!-- <div class="product-card">
+                <figure class="product-image">
+                    <img src="foto3.jpg">
+                </figure>
+
+                <div class="product-title">
+                    <h3 class="product-name"> Tylenol </h3>
+                    <p class="product-price">$3.69</p>
+                </div>
+
+                <a href="./product.html" class="button-buy">comprar</a>
+            </div>
+            <div class="product-card">
+                <figure class="product-image">
+                    <img src="foto4.jpg">
+                </figure>
+
+                <div class="product-title">
+                    <h3 class="product-name">Gastrigel</h3>
+                    <p class="product-price">$4.50</p>
+                </div>
+
+                <a href="#" class="button-buy">comprar</a>
+            </div>
+            <div class="product-card">
+                <figure class="product-image">
+                    <img src="foto5.jpg">
+                </figure>
+
+                <div class="product-title">
+                    <h3 class="product-name">Panadol</h3>
+                    <p class="product-price">$2.60</p>
+                </div>
+
+                <a href="#" class="button-buy">comprar</a>
+            </div> -->
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://www.instagram.com/farmaciaelvalle/">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://twitter.com/farmaciaelvalle">
+            <i class="fab fa-twitter"></i>
+        </a>
+    </footer>
+
+    <script type="text/javascript" src="./index.js"></script>
+    <script src="https://kit.fontawesome.com/42b082d6eb.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript"> 
+        const products = [
+    {
+        id: "a",
+        name: "Tylenol",
+        price: 3.69,
+        description: `Mareo, resfriado, dolor de cabeza, congestión, fiebre.`,
+    },
+    {
+        id: "b",
+        name: "Gastrigel",
+        price: 4.50,
+        description: `Acidez estomacal, flatulencias, agrura. `,
+    },
+    {
+        id: "c",
+        name: "Panadol",
+        price: 2.60,
+        description: `Mareo, resfriado, dolor de cabeza, congestión, fiebre. `,
+    },
+];
+var mainContainer = document.getElementById("main-container");
+var button_order;
+var subtotal = 0;
+var total = 0;
+var taxes = 0;
+var discount = 0;
+
+function printProducts()
+{
+    products.forEach( product => {
+        mainContainer.innerHTML += `
+        <div class="product-card">
+            <figure class="product-image">
+                <img src="foto3.jpg">
+            </figure>
+
+            <div class="product-title">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">$${product.price}</p>
+            </div>
+
+            <a href="#" class="button-buy" id="${product.id}">comprar</a>
+        </div>`
+        ;
+    });
+   
+}
+
+
+
+
+function printProduct( product )
+{
+    mainContainer.innerHTML = `
+    <div class="product-card">
+    <figure class="product-image">
+        <img src="foto4.jpg">
+    </figure>
+
+    <div class="product-title">
+        <h3 class="product-name">${product.name}</h3>
+        <p class="product-price">$${product.price}</p>
+    </div>
+
+    <p>${product.description}</p>
+</div>
+
+<form action="#">
+    <label for="name">
+        <span>Nombre: </span>
+        <input type="text" name="name" id="name">
+    </label>
+    <label for="lastname">
+        <span>Apellido: </span>
+        <input type="text" name="lastname" id="lastname">
+    </label>
+    <label for="phone">
+        <span>Telefono: </span>
+        <input type="tel" name="phone" id="phone">
+    </label>
+    <label for="date">
+        <span>Fecha: </span>
+        <input type="date" name="date" id="date">
+    </label>
+    <label for="location">
+        <span>Ubicacion: </span>
+        <input type="text" name="location" id="location">
+    </label>
+    <label for="location">
+        <span>Jubilado: </span>
+        <input type="checkbox" name="retired" id="retired">
+    </label>
+    <label for="units">
+        <span>Unidades: </span>
+        <input type="number" name="units" id="units">
+    </label>
+
+    <input type="submit" id="button-order" class="button-order" value="Pedir">
+</form>`;
+
+
+}
+
+function printBill()
+{
+    mainContainer.innerHTML += `
+    <div class="bill">
+        <ul>
+            <li>Subtotal: ${subtotal}$</li>
+            <li>I.T.B.M.S: ${taxes}$</li>
+            <li>Total: ${total}$</li>
+        </ul>
+    </div>`;
+}
+
+printProducts();
+var buy_button1 = document.getElementById("a");
+var buy_button2 = document.getElementById("b");
+var buy_button3 = document.getElementById("c");
+
+buy_button1.addEventListener("click", () => {
+    printProduct(products[0])
+    button_order = document.getElementById("button-order");
+
+    button_order.addEventListener("click", e => {
+        var units = document.getElementById("units").value;
+        var isRetired = document.getElementById("retired").checked;
+        console.log(isRetired);
+
+        subtotal = Math.floor(5 * units);
+
+        if(isRetired) {
+            subtotal = Math.floor(subtotal * 0.85);
+        }
+
+        taxes = Math.floor(subtotal * 0.07);
+        total = Math.floor(subtotal + taxes);
+
+        printBill();
+        e.preventDefault();
+    });
+});
+buy_button2.addEventListener("click", () => {
+    printProduct(products[1])
+    button_order = document.getElementById("button-order");
+
+    button_order.addEventListener("click", e => {
+    var units = document.getElementById("units").value;
+    var isRetired = document.getElementById("retired").checked;
+    console.log(isRetired);
+
+    subtotal = Math.floor(5 * units);
+
+    if(isRetired) {
+        subtotal = Math.floor(subtotal * 0.85);
+    }
+
+    taxes = Math.floor(subtotal * 0.07);
+    total = Math.floor(subtotal + taxes);
+
+    printBill();
+    e.preventDefault();
+});
+});
+buy_button3.addEventListener("click", () => {
+    printProduct(products[2])
+    button_order = document.getElementById("button-order");
+
+    button_order.addEventListener("click", e => {
+    var units = document.getElementById("units").value;
+    var isRetired = document.getElementById("retired").checked;
+    console.log(isRetired);
+
+    subtotal = Math.floor(5 * units);
+
+    if(isRetired) {
+        subtotal = Math.floor(subtotal * 0.85);
+    }
+
+    taxes = Math.floor(subtotal * 0.07);
+    total = Math.floor(subtotal + taxes);
+
+    printBill();
+    e.preventDefault();
+});
+});
+</script>
+</body>
+</html>
